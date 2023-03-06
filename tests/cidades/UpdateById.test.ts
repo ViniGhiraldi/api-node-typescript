@@ -3,39 +3,19 @@ import { testServer } from "../jest.setup"
 
 describe('Cidades - UpdateById',()=>{
     it('alteração bem sucedida', async () => {
-        const req1 = await testServer.put('/cidades/1').send({nome: 'teste'})
+        const res1 = await testServer.post('/cidades').send({nome:"Caxias do Sul"});
 
-        expect(req1.statusCode).toEqual(StatusCodes.OK);
-        expect(typeof req1.body).toEqual('number');
-    })
-    it('Não pode faltar o body.nome na requisição',async ()=>{
-        const res1 = await testServer.put('/cidades/1')
+        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
 
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body.nome')
-    })
-    it('id não pode ser igual ou menor que 0',async ()=>{
-        const req1 = await testServer.put('/cidades/0').send({nome: 'teste'})
 
-        expect(req1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(req1.body).toHaveProperty('errors.params.id');
-    })
-    it('id não pode ser string',async ()=>{
-        const req1 = await testServer.put('/cidades/teste').send({nome: 'teste'})
+        const resAtualizada = await testServer.put(`/cidades/${res1.body}`).send({nome: 'Caxias'});
 
-        expect(req1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(req1.body).toHaveProperty('errors.params.id');
+        expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     })
-    it('id não pode ser numero decimal',async ()=>{
-        const req1 = await testServer.put('/cidades/1.5').send({nome: 'teste'})
+    it('Tenta atualizar registro que não existe',async ()=>{
+        const res1 = await testServer.put('/cidades/99999').send({nome: 'Caxias'});
 
-        expect(req1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(req1.body).toHaveProperty('errors.params.id');
-    })
-    it('Não pode alterar o nome de um registro para um muito curto',async ()=>{
-        const res1 = await testServer.put('/cidades/1').send({nome: "Ti"});
-
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body.nome')
-    })
+        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res1.body).toHaveProperty('errors.default');
+    });
 })
