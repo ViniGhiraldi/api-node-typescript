@@ -2,5 +2,6 @@
 dependencias.md
 
 /build
+/coverage
 
 .env
