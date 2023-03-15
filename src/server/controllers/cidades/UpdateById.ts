@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
-import { ICidade } from "../../database/models";
+import { ICidade, IParamProps } from "../../database/models";
+import { CidadesProvider } from "../../database/providers/cidades";
 import { validation } from "../../shared/middleware";
 
 
-interface IParamProps {
-    id?: number;
-}
 interface IBodyProps extends Omit<ICidade, 'id'> {}
 
 export const updateByIdValidation = validation((getSchema) => ({
@@ -22,11 +20,14 @@ export const updateByIdValidation = validation((getSchema) => ({
 
 
 export const updateById = async (req:Request<IParamProps, {}, IBodyProps>, res:Response) =>{
-    if(Number(req.params.id) === 99999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        errors:{
-            default: 'Registro não encontrado'
-        }
-    })
+    const result = await CidadesProvider.updateById(req.params, req.body)
+    if(result instanceof Error){
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors:{
+                default: result.message
+            }
+        })
+    }
 
-    return res.status(StatusCodes.NO_CONTENT).send();
+    return res.status(StatusCodes.NO_CONTENT).json(result);
 }
