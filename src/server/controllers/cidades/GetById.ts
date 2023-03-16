@@ -2,9 +2,11 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
-import { IParamProps } from '../../database/models';
 import { CidadesProvider } from "../../database/providers/cidades";
 
+interface IParamProps{
+    id?: number;
+}
 
 export const getByIdValidation = validation((getSchema) => ({
     params: getSchema<IParamProps>(yup.object().shape({
@@ -13,7 +15,9 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById = async (req:Request<IParamProps>, res:Response) =>{
-    const result = await CidadesProvider.getById(req.params);
+    if(!req.params.id) return;
+    
+    const result = await CidadesProvider.getById(req.params.id);
 
     if(result instanceof Error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

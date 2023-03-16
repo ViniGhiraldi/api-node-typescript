@@ -1,17 +1,18 @@
 import { ETableNames } from "../../ETableNames";
 import { Knex } from "../../knex";
-import { ICidade, IParamProps } from "../../models";
+import { ICidade } from "../../models";
 
-export const getById = async (params: IParamProps): Promise<ICidade | Error> => {
+export const getById = async (id: number): Promise<ICidade | Error> => {
     try {
-        const result = await Knex.from(ETableNames.cidade).select('*').where({id: params.id}).first().then((row) => row)
+        //const result = await Knex(ETableNames.cidade).select('*').where('id','=',id).first();
+        const result = await Knex(ETableNames.cidade).select('*').where({id: id}).first();
         console.log(result);
 
-        if(typeof result === 'object'){
-            return result;
-        }
-        return new Error(`Não existe registro com id ${params.id}`);
+        if(result) return result;
+
+        return new Error(`Registro com id ${id} não encontrado`);
     } catch (error) {
-        return new Error('Erro ao selecionar registro');
+        console.log(error);
+        return new Error('Erro ao consultar registro');
     }
 }

@@ -1,18 +1,15 @@
 import { ETableNames } from "../../ETableNames"
 import { Knex } from "../../knex"
-import { IParamProps } from "../../models";
 
-export const deleteById = async (params: IParamProps): Promise<number | Error> => {
+export const deleteById = async (id: number): Promise<number | Error> => {
     try {
-        const result = await Knex(ETableNames.cidade).del().where({id: params.id});
+        //const result = await Knex(ETableNames.cidade).where('id','=',id).del();
+        const result = await Knex(ETableNames.cidade).del().where({id: id});
 
-        if(result === 1){
+        if(result){
             return result;
-        }else if(result === 0){
-            return new Error('Registro não existe');
         }
-
-        return new Error('Erro ao deletar o registro');
+        return new Error(`Registro de id ${id} não existe`);
     } catch (error) {
         console.log(error);
         return new Error('Erro ao deletar o registro');

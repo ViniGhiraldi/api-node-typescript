@@ -1,18 +1,30 @@
 import { ICidade } from './../../models/Cidade';
 import { ETableNames } from "../../ETableNames";
 import { Knex } from "../../knex";
-import { IQueryProps } from "../../models";
 
-export const getAll = async (query: IQueryProps): Promise<ICidade[] | Error> => {
+export const getAll = async (page: number, limit: number, filter: string, id = 0): Promise<ICidade[] | Error> => {
     try{
-        const result = await Knex.from(ETableNames.cidade).select('*')
+        const result = await Knex(ETableNames.cidade)
+            .select('*')
+            .where('id', Number(id))
+            .orWhere('nome', 'like', `%${filter}%`)
+            .offset((page - 1) * limit)
+            .limit(limit);
+
         console.log(result)
         
-        if(result.length !== 0){
-            return result;
+        if(id > 0 && result.every(item => item.id !== id)){
+            const resultById = await Knex(ETableNames.cidade)
+                .select('*')
+                .where('id', '=', id)
+                .first();
+
+            if (resultById) return [...result, resultById];
         }
-        return new Error('Não existem registros nessa especificação');
+
+        return result;
     } catch (error) {
+        console.log(error);
         return new Error('Erro ao pegar registro');
     }
 }

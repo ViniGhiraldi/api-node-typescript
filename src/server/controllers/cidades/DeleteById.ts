@@ -3,8 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
 import { CidadesProvider } from "../../database/providers/cidades";
-import { IParamProps } from '../../database/models';
 
+interface IParamProps {
+    id?: number;
+}
 
 export const deleteByIdValidation = validation((getSchema) => ({
     params: getSchema<IParamProps>(yup.object().shape({
@@ -13,7 +15,9 @@ export const deleteByIdValidation = validation((getSchema) => ({
 }));
 
 export const deleteById = async (req:Request<IParamProps>, res:Response) =>{
-    const result = await CidadesProvider.deleteById(req.params);
+    if(!req.params.id) return;
+
+    const result = await CidadesProvider.deleteById(req.params.id);
     if(result instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
@@ -22,5 +26,5 @@ export const deleteById = async (req:Request<IParamProps>, res:Response) =>{
         })
     }
 
-    return res.status(StatusCodes.NO_CONTENT).json(result);
+    return res.status(StatusCodes.NO_CONTENT).send();
 }
