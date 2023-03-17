@@ -7,7 +7,7 @@ dependencias necessarias:
 dependencias de desenvolvimento: 
  npm i -D typescript @types/express ts-node-dev
  npm i -D supertest @types/supertest (devDependencie necessária para testes junto com o jest. Ela é reponsável por pegar o servidor inteiro do express e inicializar de forma interna, para que o jest faça as requisições)
- npm i sqlite3 -D (devDependencie para query-builder junto com o knex)
+ npm i sqlite3 -D (devDependencie para query-builder junto com o knex. Pode também ser instalado como Dependencie afim de evitar problemas ao rodar o projeto em produção, porém, o comum é substitui-lo por um banco de dados postinger no futuro)
 
 
 --ts-node-dev e arquivo tsconfig.json--
@@ -37,7 +37,7 @@ dependecias não necessarias porém que ajudam:
 
 --Testes--
 dependencia para testes:
- npm i jest ts-jest @types/jest
+ npm i -D jest ts-jest @types/jest
  para inicia-lo: npx jest --init (respostas: yes;yes;Use arrow-keys. Return to submit;node;yes;Use arrow-keys. Return to submit;v8;yes)
 
  configuração do arquivo jest.config.ts:
