@@ -7,7 +7,7 @@ export async function up(knex: Knex){
         .createTable(ETableNames.pessoa, table => {
             table.bigIncrements('id').primary().index();
             table.string('nome').index().notNullable();
-            table.string('sobrenome').index().notNullable();
+            table.string('sobrenome').index().nullable();
             table.string('email').unique().notNullable();
 
             table
