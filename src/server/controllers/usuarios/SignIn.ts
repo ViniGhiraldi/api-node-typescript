@@ -9,8 +9,8 @@ interface IBodyProps extends Omit<IUsuario, 'id' | 'nome'> {}
 
 export const signInValidation = validation((getSchema)=>({
     body: getSchema<IBodyProps>(yup.object().shape({
-        email: yup.string().email().required().min(6),
-        senha: yup.string().required().min(7)
+        email: yup.string().email().required().min(5),
+        senha: yup.string().required().min(6)
     }))
 }))
 
