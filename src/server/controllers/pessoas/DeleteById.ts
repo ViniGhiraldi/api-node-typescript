@@ -20,7 +20,7 @@ export const deleteById = async (req: Request<IParamProps>, res: Response) => {
     const result = await PessoasProvider.deleteById(req.params.id);
 
     if(result instanceof Error){
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors:{
                 default: result.message
             }

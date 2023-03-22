@@ -14,10 +14,8 @@ export const updateById = async (id:number, pessoa:Omit<IPessoa, 'id'>): Promise
             .where('email', '=', pessoa.email)
             .select('id').first();
 
-        console.log(emailExists && Number(emailExists.id) !== id)
 
-
-        if(emailExists !== undefined && emailExists.id !== id) {
+        if(emailExists !== undefined && emailExists.id !== Number(id)) {
             return new Error('O email informado já está vinculado a outra pessoa');
         }
 

@@ -5,19 +5,19 @@ import { testServer } from "../jest.setup";
 
 describe('Cidades - DeleteById', ()=>{
     it('Deleta registro',async ()=>{
-        const res1 = await testServer.post('/cidades').send({nome:"Caxias do Sul"});
+        const res = await testServer.post('/cidades').send({nome:"Caxias do Sul"});
 
-        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
+        expect(res.statusCode).toEqual(StatusCodes.CREATED);
 
 
-        const resApagada = await testServer.delete(`/cidades/${res1.body}`);
+        const resApagada = await testServer.delete(`/cidades/${res.body}`);
 
         expect(resApagada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     });
     it('Tenta apagar um registro que não existe',async ()=>{
-        const res1 = await testServer.delete('/cidades/99999');
+        const res = await testServer.delete('/cidades/99999');
 
-        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-        expect(res1.body).toHaveProperty('errors.default');
+        expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res.body).toHaveProperty('errors.default');
     })
 });

@@ -5,15 +5,15 @@ import { testServer } from "../jest.setup";
 
 describe('Cidades - Create', ()=>{
     it('Cria registro',async ()=>{
-        const res1 = await testServer.post('/cidades').send({nome: "Tiete"});
+        const res = await testServer.post('/cidades').send({nome: "Tiete"});
 
-        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-        expect(typeof res1.body).toEqual('number')
+        expect(res.statusCode).toEqual(StatusCodes.CREATED);
+        expect(typeof res.body).toEqual('number');
     });
     it('Não pode criar um registro com nome muito curto',async ()=>{
-        const res1 = await testServer.post('/cidades').send({nome: "Ti"});
+        const res = await testServer.post('/cidades').send({nome: "Ti"});
 
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty('errors.body.nome')
-    })
+        expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+        expect(res.body).toHaveProperty('errors.body.nome')
+    });
 });

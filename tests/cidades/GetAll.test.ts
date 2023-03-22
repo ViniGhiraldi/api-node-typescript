@@ -5,9 +5,9 @@ import { testServer } from "../jest.setup";
 
 describe('Cidades - GetAll', ()=>{
     it('busca registros sem query',async ()=>{
-        const res1 = await testServer.post('/cidades').send({nome:"Caxias do Sul"});
+        const res = await testServer.post('/cidades').send({nome:"Caxias do Sul"});
 
-        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
+        expect(res.statusCode).toEqual(StatusCodes.CREATED);
 
 
         const resBuscada = await testServer.get('/cidades');
