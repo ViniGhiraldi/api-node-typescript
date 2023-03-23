@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { IUsuario } from '../../database/models';
 import { UsuariosProvider } from '../../database/providers/usuarios';
 import { validation } from "../../shared/middleware";
+import { PasswordCrypto } from '../../shared/services';
 
 interface IBodyProps extends Omit<IUsuario, 'id' | 'nome'> {}
 
@@ -27,7 +28,9 @@ export const signIn = async (req:Request<{},{},IBodyProps>, res:Response) => {
         })
     }
 
-    if(result.senha === req.body.senha){
+    const passwordValidation = await PasswordCrypto.verifyPassword(req.body.senha, result.senha);
+
+    if(passwordValidation){
         return res.status(StatusCodes.OK).json({ accessToken: 'teste.teste.teste' });
     }
 

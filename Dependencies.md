@@ -92,4 +92,7 @@ Dependencias para Banco de Dados:
  up: usado para realizar a migration, ou seja, será executada quando utilizarmos npm run knex:migrate. Por tanto, nele ficará o nosso create table.
  down: usado para desfazer a migration. Será executado quando utilizarmos npm run knex:rollback. Sendo assim, nele haverão comando como o drop table.
 
+
+ npm i bcryptjs - dependencia para criptografia de senhas
+ npm i -D @types/bcryptjs - devDependencie de tipagens do bcrypt para o typescript
 --Database--
