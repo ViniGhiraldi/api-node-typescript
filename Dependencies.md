@@ -96,3 +96,11 @@ Dependencias para Banco de Dados:
  npm i bcryptjs - dependencia para criptografia de senhas
  npm i -D @types/bcryptjs - devDependencie de tipagens do bcrypt para o typescript
 --Database--
+
+--Validação de usuario--
+npm i jsonwebtoken
+npm i -D @types/jsonwebtoken
+
+dependencia para a criação e tratamento de tokens de validação
+
+--Validação de usuario--

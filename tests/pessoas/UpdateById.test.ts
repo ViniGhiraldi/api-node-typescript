@@ -4,7 +4,7 @@ import { testServer } from "../jest.setup"
 describe('Pessoas - UpdateById',()=>{
     let cidadeId: number| undefined = undefined;
     beforeAll(async()=>{
-        const resCidade = await testServer.post('/cidades').send({nome: 'teste'});
+        const resCidade = await testServer.post('/cidades').send({nome: 'teste'}).set('Authorization', 'Bearer teste.teste.teste');
         cidadeId = resCidade.body;
     })
 
@@ -14,7 +14,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'correia',
             email: 'vini@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
 
@@ -24,7 +24,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'guilherme',
             email: 'vini@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     })
@@ -34,7 +34,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'correia',
             email: 'vini@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(res.body).toHaveProperty('errors.default');
@@ -45,7 +45,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'marcelo',
             email: 'joao@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
 
@@ -53,7 +53,7 @@ describe('Pessoas - UpdateById',()=>{
             nome: 'miguel',
             email: 'miguel@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(res2.statusCode).toEqual(StatusCodes.CREATED);
 
@@ -62,7 +62,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'marcelo',
             email: 'miguel@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(resInvalida.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(resInvalida.body).toHaveProperty('errors.default');

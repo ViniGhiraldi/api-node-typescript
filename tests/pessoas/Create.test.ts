@@ -4,7 +4,7 @@ import { testServer } from "../jest.setup"
 describe('Pessoas - Create', ()=>{
     let cidadeId: number| undefined = undefined;
     beforeAll(async()=>{
-        const resCidade = await testServer.post('/cidades').send({nome: 'teste'});
+        const resCidade = await testServer.post('/cidades').send({nome: 'teste'}).set('Authorization', 'Bearer teste.teste.teste');
         cidadeId = resCidade.body;
     })
 
@@ -14,7 +14,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'vini@email.com',
             cidadeId
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
         expect(typeof res.body).toEqual('number');
@@ -25,7 +25,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'vini2@email.com',
             cidadeId
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
         expect(typeof res.body).toEqual('number');
@@ -35,7 +35,7 @@ describe('Pessoas - Create', ()=>{
             nome: 'Ti',
             email: 'ti@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.nome')
@@ -45,14 +45,14 @@ describe('Pessoas - Create', ()=>{
             nome: 'pedro',
             email: 'pedro@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
 
         const resDuplicada = await testServer.post('/pessoas').send({
             nome: 'pedrinho',
             email: 'pedro@email.com',
             cidadeId
-        });
+        }).set('Authorization', 'Bearer teste.teste.teste');
 
         expect(resDuplicada.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(resDuplicada.body).toHaveProperty('errors.default');
@@ -62,7 +62,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'correia@email.com',
             cidadeId
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.nome');
@@ -72,7 +72,7 @@ describe('Pessoas - Create', ()=>{
             nome: 'marcelo',
             sobrenome: 'correia',
             cidadeId
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.email');
@@ -83,7 +83,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'teste',
             cidadeId
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.email');
@@ -93,7 +93,7 @@ describe('Pessoas - Create', ()=>{
             nome: 'marcelo',
             sobrenome: 'correia',
             email: 'marcelo@email.com'
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.cidadeId');
@@ -104,7 +104,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'marcelo@email.com',
             cidadeId: 'teste'
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.cidadeId');
@@ -115,13 +115,13 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'marcelo@email.com',
             cidadeId: 99999
-        })
+        }).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(res.body).toHaveProperty('errors.default');
     });
     it('Tenta criar registro sem nenhuma propriedade', async () => {
-        const res = await testServer.post('/pessoas').send({})
+        const res = await testServer.post('/pessoas').send({}).set('Authorization', 'Bearer teste.teste.teste')
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.nome');
