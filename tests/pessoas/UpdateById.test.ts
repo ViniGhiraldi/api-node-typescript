@@ -3,8 +3,24 @@ import { testServer } from "../jest.setup"
 
 describe('Pessoas - UpdateById',()=>{
     let cidadeId: number| undefined = undefined;
+    let token: string = '';
     beforeAll(async()=>{
-        const resCidade = await testServer.post('/cidades').send({nome: 'teste'}).set('Authorization', 'Bearer teste.teste.teste');
+        const createdUser = await testServer.post('/cadastrar').send({
+            nome: 'teste',
+            email: 'teste@email.com',
+            senha: '123456'
+        })
+        expect(createdUser.statusCode).toEqual(StatusCodes.CREATED);
+    
+        const user = await testServer.post('/entrar').send({
+            email: 'teste@email.com',
+            senha: '123456'
+        })
+        expect(user.statusCode).toEqual(StatusCodes.OK);
+    
+        token = `Bearer ${user.body.accessToken}`;
+        
+        const resCidade = await testServer.post('/cidades').send({nome: 'teste'}).set('Authorization', token);
         cidadeId = resCidade.body;
     })
 
@@ -14,7 +30,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'correia',
             email: 'vini@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
 
@@ -24,7 +40,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'guilherme',
             email: 'vini@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     })
@@ -34,7 +50,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'correia',
             email: 'vini@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(res.body).toHaveProperty('errors.default');
@@ -45,7 +61,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'marcelo',
             email: 'joao@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
 
@@ -53,7 +69,7 @@ describe('Pessoas - UpdateById',()=>{
             nome: 'miguel',
             email: 'miguel@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(res2.statusCode).toEqual(StatusCodes.CREATED);
 
@@ -62,7 +78,7 @@ describe('Pessoas - UpdateById',()=>{
             sobrenome: 'marcelo',
             email: 'miguel@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(resInvalida.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(resInvalida.body).toHaveProperty('errors.default');

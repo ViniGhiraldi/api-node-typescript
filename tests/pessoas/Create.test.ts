@@ -3,8 +3,24 @@ import { testServer } from "../jest.setup"
 
 describe('Pessoas - Create', ()=>{
     let cidadeId: number| undefined = undefined;
-    beforeAll(async()=>{
-        const resCidade = await testServer.post('/cidades').send({nome: 'teste'}).set('Authorization', 'Bearer teste.teste.teste');
+    let token: string = '';
+    beforeAll(async()=>{    
+        const createdUser = await testServer.post('/cadastrar').send({
+            nome: 'teste',
+            email: 'teste@email.com',
+            senha: '123456'
+        })
+        expect(createdUser.statusCode).toEqual(StatusCodes.CREATED);
+
+        const user = await testServer.post('/entrar').send({
+            email: 'teste@email.com',
+            senha: '123456'
+        })
+        expect(user.statusCode).toEqual(StatusCodes.OK);
+
+        token = `Bearer ${user.body.accessToken}`;
+            
+        const resCidade = await testServer.post('/cidades').send({nome: 'teste'}).set('Authorization', token);
         cidadeId = resCidade.body;
     })
 
@@ -14,7 +30,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'vini@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
         expect(typeof res.body).toEqual('number');
@@ -25,7 +41,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'vini2@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
         expect(typeof res.body).toEqual('number');
@@ -35,7 +51,7 @@ describe('Pessoas - Create', ()=>{
             nome: 'Ti',
             email: 'ti@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.nome')
@@ -45,14 +61,14 @@ describe('Pessoas - Create', ()=>{
             nome: 'pedro',
             email: 'pedro@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
         expect(res.statusCode).toEqual(StatusCodes.CREATED);
 
         const resDuplicada = await testServer.post('/pessoas').send({
             nome: 'pedrinho',
             email: 'pedro@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste');
+        }).set('Authorization', token);
 
         expect(resDuplicada.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(resDuplicada.body).toHaveProperty('errors.default');
@@ -62,7 +78,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'correia@email.com',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.nome');
@@ -72,7 +88,7 @@ describe('Pessoas - Create', ()=>{
             nome: 'marcelo',
             sobrenome: 'correia',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.email');
@@ -83,7 +99,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'teste',
             cidadeId
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.email');
@@ -93,7 +109,7 @@ describe('Pessoas - Create', ()=>{
             nome: 'marcelo',
             sobrenome: 'correia',
             email: 'marcelo@email.com'
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.cidadeId');
@@ -104,7 +120,7 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'marcelo@email.com',
             cidadeId: 'teste'
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.cidadeId');
@@ -115,13 +131,13 @@ describe('Pessoas - Create', ()=>{
             sobrenome: 'correia',
             email: 'marcelo@email.com',
             cidadeId: 99999
-        }).set('Authorization', 'Bearer teste.teste.teste')
+        }).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
         expect(res.body).toHaveProperty('errors.default');
     });
     it('Tenta criar registro sem nenhuma propriedade', async () => {
-        const res = await testServer.post('/pessoas').send({}).set('Authorization', 'Bearer teste.teste.teste')
+        const res = await testServer.post('/pessoas').send({}).set('Authorization', token)
 
         expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res.body).toHaveProperty('errors.body.nome');
