@@ -92,6 +92,13 @@ Dependencias para Banco de Dados:
  up: usado para realizar a migration, ou seja, será executada quando utilizarmos npm run knex:migrate. Por tanto, nele ficará o nosso create table.
  down: usado para desfazer a migration. Será executado quando utilizarmos npm run knex:rollback. Sendo assim, nele haverão comando como o drop table.
 
+ se quiser utilizar o sqlite3 para testes no ambiente de produção, coloque-o como dependencia e não devDependencie. Quando não for utilizar mais para isso, coloque-o novamente como devDependencie.
+
+ npm i pg
+ npm i -D @types/pg
+ 
+  Banco de dados Postinger, para utilizar em produção, uma vez que o sqlite3 é um pequeno banco em memória e reseta toda vez que o redeploy é realizado
+
 
  npm i bcryptjs - dependencia para criptografia de senhas
  npm i -D @types/bcryptjs - devDependencie de tipagens do bcrypt para o typescript
