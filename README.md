@@ -1,7 +1,7 @@
 # api-node-typescript
 
 #IDEIA DO PROJETO:
-Esta api tem como finalidade o controle e o gerenciamento de uma lista que envolve cidades e pessoas. Algumas cidades já estão cadastradas no banco,
+Esta api tem como finalidade o controle e o gerenciamento de uma lista que envolve cidades e pessoas. Algumas cidades já estão nas seeds, prontas para serem executadas,
 porém é possível criar, deletar e alterar outras. O mesmo para as pessoas.
 Para poder utilizar a aplicação, é necessário estar logado no sistema. Toda vez que um login é feito, um token de acesso é disponibilizado ao usuário,
 com duração de 24 horas.
