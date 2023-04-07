@@ -1,12 +1,12 @@
 # api-node-typescript
 
-#IDEIA DO PROJETO:
+# IDEIA DO PROJETO:
 Esta api tem como finalidade o controle e o gerenciamento de uma lista que envolve cidades e pessoas. Algumas cidades já estão nas seeds, prontas para serem executadas,
 porém é possível criar, deletar e alterar outras. O mesmo para as pessoas.
 Para poder utilizar a aplicação, é necessário estar logado no sistema. Toda vez que um login é feito, um token de acesso é disponibilizado ao usuário,
 com duração de 24 horas.
 
-#FERRAMENTAS UTILIZADAS
+# FERRAMENTAS UTILIZADAS
 TypeScript: Linguagem utilizada para escrever os códigos da aplicação;
 NodeJs: Ambiente no qual a aplicação será executada após a conversão do TypeScript;
 Express: Framework com recursos adicionais;
@@ -20,5 +20,5 @@ Bcryptjs: Biblioteca para encriptação de dados, utilizado em especial na senha
 CORS: Controle da política de privacidade da aplicação, define quem pode fazer requisições para ela;
 Jest e Supertest: Ambientes utilizados para desenvolver e executar os testes.
 
-#OBJETIVO DA APLICAÇÃO
+# OBJETIVO DA APLICAÇÃO
 Esta aplicação foi desenvolvida para a minha aprimoração pessoal com a ferramenta NodeJs e TypeScript.
