@@ -1,26 +1,43 @@
-# api-node-typescript
+# REACT-MUI-TYPESCRIPT
 
-### IDEIA DO PROJETO
-Esta api tem como finalidade o controle e o gerenciamento de uma lista que envolve cidades e pessoas. Algumas cidades já estão nas seeds, prontas para serem executadas,
-porém é possível criar, deletar e alterar outras. O mesmo para as pessoas.
-Para poder utilizar a aplicação, é necessário estar logado no sistema. Toda vez que um login é feito, um token de acesso é disponibilizado ao usuário, com duração de 24 horas.
+## Objetivo:
 
-### INTEGRAÇÃO
-Este backend está sendo utilizado no repositório https://github.com/ViniGhiraldi/react-mui-typescript
+### Este projeto foi usado para minha aprimoração em React com TypeScript e outros recursos (Material UI, Axios, YUP...).
 
-### FERRAMENTAS UTILIZADAS
-TypeScript: Linguagem utilizada para escrever os códigos da aplicação;
-NodeJs: Ambiente no qual a aplicação será executada após a conversão do TypeScript;
-Express: Framework com recursos adicionais;
-DotEnv: Pacote usado para gerenciar as váriaveis de ambiente;
-YUP: Construtor de validações de dados;
-Knex: Construtor de consultas de banco de dados;
-SQLite3: Biblioteca com uma base de dados pequena embutida, utilizada para testes no ambiente de desenvolvimento;
-PostgreSQL: Sistema gerenciador de banco de dados utilizado no ambiente de produção;
-JsonWebToken: Utilizado para controle e gerenciamento de permissões na aplicação;
-Bcryptjs: Biblioteca para encriptação de dados, utilizado em especial na senha dos usuários;
-CORS: Controle da política de privacidade da aplicação, define quem pode fazer requisições para ela;
-Jest e Supertest: Ambientes utilizados para desenvolver e executar os testes.
+### Ele faz parte de um projeto full-stack, que se integra com uma API desenvolvida em NodeJs com TypeScript, que pode ser encontrada neste repositório: https://github.com/ViniGhiraldi/api-node-typescript
 
-### OBJETIVO DA APLICAÇÃO
-Esta aplicação foi desenvolvida para a minha aprimoração pessoal com a ferramenta NodeJs e TypeScript.
+### Mais detalhes nas observações.
+
+## Características do Projeto:
+
+### Este projeto é capaz de realizar o CRUD com os campos de pessoas (com nome, sobrenome, email, cidadeId e id) e cidades (com nome e id). Possuí também autenticação, troca de tema, responsividade e recursos de listagem.
+
+## Como executar:
+
+### Após clonar o projeto, abra-o em seu terminal e digite o seguinte comando:
+```
+npm i
+```
+### Aguarde a conclusão da instalação das dependências e em seguida, execute:
+```
+npm start
+```
+### E pronto! Dentro de alguns instantes a aplicação estará rodando. O email e a senha cadastrados por padrão no banco serão informados na tela de login (leia as observações abaixo).
+
+## Observações (importante):
+
+### Este projeto utiliza de uma API externa para buscar os dados. Sem ela, não será possível passar da tela de login.
+
+### A API se encontra no meu GitHub: https://github.com/ViniGhiraldi/api-node-typescript
+
+### Na API há outro README.md com as instruções de como rodar ela em sua máquina.
+
+## Detalhe:
+
+### Na API o sqlite3 está sendo utilizado como banco de dados no ambiente de desenvolvimento, e ele não suporta a atribuição de valores default, então é necessário que uma opção chamada useNullAsDefault esteja habilitada. Devido a isso, pessoas que não possuem sobrenome cadastrado possuem a palavra "null" exibida depois de seu primeiro nome na tabela de pessoas.
+
+### Caso haja problema na execução do projeto, um dos motivos pode ser que a porta utilizada já esteja em uso, seja a desta aplicação (porta 3000) ou a da API (porta 3333). Para mudar a porta deste projeto para 3001 por exemplo, basta adicionar "env:PORT=3001" após o npm start. O comando fica assim:
+```
+npm start env:PORT=3001
+```
+### Se o problema for na porta da API, as instruções de como troca-lá está no README.md da mesma, mas ainda assim é preciso referencia-la aqui. No arquivo index.ts dentro da pasta environment, dentro de shared, altere os 4 últimos números para os mesmos que você definiu na API.

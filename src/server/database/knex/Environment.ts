@@ -3,7 +3,7 @@ import path from 'path'
 
 export const development: Knex.Config = {
     client: 'sqlite3',
-    useNullAsDefault: false,
+    useNullAsDefault: true,
     connection: {
         filename: path.resolve(__dirname,'..','..','..','..','database.sqlite')
     },
